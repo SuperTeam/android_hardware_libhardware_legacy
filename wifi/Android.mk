@@ -24,7 +24,15 @@ endif
 ifdef WIFI_IFACE_DIR
 LOCAL_CFLAGS += -DWIFI_IFACE_DIR=\"$(WIFI_IFACE_DIR)\"
 endif
-
-LOCAL_SRC_FILES += wifi/wifi.c
+ifdef WIFI_PRE_LOADER
+LOCAL_CFLAGS += -DWIFI_PRE_LOADER=\"$(WIFI_PRE_LOADER)\"
+endif
+ifeq ($(TARGET_CUSTOM_WIFI),)
+	LOCAL_SRC_FILES += \
+		wifi/wifi.c
+else
+	LOCAL_SRC_FILES += \
+		$(TARGET_CUSTOM_WIFI)
+endif
 
 LOCAL_SHARED_LIBRARIES += libnetutils

@@ -49,9 +49,6 @@ static char iface[PROPERTY_VALUE_MAX];
 // TODO: use new ANDROID_SOCKET mechanism, once support for multiple
 // sockets is in
 
-#ifndef WIFI_IFACE_DIR
-#define WIFI_IFACE_DIR                  "/data/system/wpa_supplicant"
-#endif
 #ifndef WIFI_DRIVER_MODULE_PATH
 #define WIFI_DRIVER_MODULE_PATH         "/system/lib/modules/wlan.ko"
 #endif
@@ -71,7 +68,7 @@ static char iface[PROPERTY_VALUE_MAX];
 
 #define WIFI_DRIVER_LOADER_DELAY	1000000
 
-static const char IFACE_DIR[]           = WIFI_IFACE_DIR;
+static const char IFACE_DIR[]           = "/data/system/wpa_supplicant";
 static const char DRIVER_MODULE_NAME[]  = WIFI_DRIVER_MODULE_NAME;
 static const char DRIVER_MODULE_TAG[]   = WIFI_DRIVER_MODULE_NAME " ";
 static const char DRIVER_MODULE_PATH[]  = WIFI_DRIVER_MODULE_PATH;
@@ -429,6 +426,7 @@ int wifi_load_driver()
     char driver_status[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
 
+#if 0
     if (check_driver_loaded()) {
         return 0;
     }
@@ -450,6 +448,7 @@ int wifi_load_driver()
 #endif
         return -1;
     }
+#endif
 
     if (strcmp(FIRMWARE_LOADER,"") == 0) {
         usleep(WIFI_DRIVER_LOADER_DELAY);
@@ -477,6 +476,8 @@ int wifi_load_driver()
 
 int wifi_unload_driver()
 {
+    return 0;
+#if 0
     int count = 20; /* wait at most 10 seconds for completion */
 
     if (rmmod(DRIVER_MODULE_NAME) == 0) {
@@ -498,6 +499,7 @@ int wifi_unload_driver()
         return -1;
     } else
         return -1;
+#endif
 }
 
 int ensure_config_file_exists()
